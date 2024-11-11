@@ -1,15 +1,11 @@
 # Use the official Mosquitto Docker image
 FROM eclipse-mosquitto:latest
 
-# Set the default port environment variable (used by Render)
-ENV PORT=1883
-
 # Copy your configuration file into the container
 COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 
-# Expose the default Mosquitto ports
+# Expose both MQTT and WebSocket ports
 EXPOSE 1883 9001
 
-# Start the Mosquitto broker
+# Start the Mosquitto broker, dynamically setting the listener port
 CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf", "-p", "${PORT}"]
-
