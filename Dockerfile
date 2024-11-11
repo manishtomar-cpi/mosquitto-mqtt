@@ -4,14 +4,8 @@ FROM eclipse-mosquitto:latest
 # Copy the Mosquitto configuration file
 COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 
-# Copy the entrypoint script to the container's bin directory
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
-# Make the entrypoint script executable
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 # Expose MQTT and WebSocket ports
 EXPOSE 1883 9001
 
-# Use the custom entrypoint script to start Mosquitto
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# Replace the listener port dynamically with the PORT environment variable during container start
+CMD sh -c "sed -i 's/^listener.*/listener ${PORT}/' /mosquitto/config/mosquitto.conf && /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf"
