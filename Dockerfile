@@ -11,4 +11,5 @@ COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 EXPOSE 1883 9001
 
 # Start the Mosquitto broker
-CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf", "-p", "${PORT}"]
+
