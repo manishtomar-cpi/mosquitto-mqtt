@@ -1,18 +1,17 @@
 # Use the official Mosquitto Docker image
 FROM eclipse-mosquitto:latest
 
-# Set environment variable for Render's dynamic port
-ENV RENDER_PORT=${PORT}
-
 # Copy the Mosquitto configuration file
 COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 
-# Copy the entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Copy the entrypoint script to the container's bin directory
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Expose default MQTT ports (1883) and WebSocket port (9001)
+# Make the entrypoint script executable
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Expose MQTT and WebSocket ports
 EXPOSE 1883 9001
 
-# Start Mosquitto using the entrypoint script
-CMD ["/entrypoint.sh"]
+# Use the custom entrypoint script to start Mosquitto
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
