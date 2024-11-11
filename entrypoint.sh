@@ -1,10 +1,13 @@
-# Placeholder listener (updated dynamically by entrypoint.sh)
-listener 1883
-protocol mqtt
+#!/bin/bash
 
-# Allow anonymous access for testing (remove for production)
-allow_anonymous true
+# Check if PORT is provided by Render
+if [ -z "$PORT" ]; then
+  echo "ERROR: PORT environment variable not set!"
+  exit 1
+fi
 
-# Log everything to stdout for debugging
-log_type all
-log_dest stdout
+# Update the Mosquitto configuration with the Render PORT
+sed -i "s/^listener.*/listener $PORT/" /mosquitto/config/mosquitto.conf
+
+# Start Mosquitto
+/usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
