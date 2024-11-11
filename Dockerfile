@@ -1,6 +1,9 @@
 # Use the official Mosquitto Docker image
 FROM eclipse-mosquitto:latest
 
+# Set the default port environment variable (used by Render)
+ENV PORT=1883
+
 # Copy your configuration file into the container
 COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 
